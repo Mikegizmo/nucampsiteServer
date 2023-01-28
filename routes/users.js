@@ -2,7 +2,6 @@ const express = require('express');
 const User = require('../models/user');
 const passport = require('passport');
 const authenticate = require('../authenticate');
-const { token } = require("morgan");
 
 const router = express.Router();
 
@@ -10,6 +9,23 @@ const router = express.Router();
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
+
+router.route('/')
+.get(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+  User.find()
+  .then(users => {
+    if (users) {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.json(users);
+    } else {
+      err = new Error('User not found');
+      err.status = 404;
+      return next(err);
+    }
+  })
+  .catch(err => next(err));
+})
 
 router.post('/signup', (req, res) => {
   User.register(
