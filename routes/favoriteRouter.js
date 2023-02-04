@@ -22,9 +22,10 @@ favoriteRouter.route('/')
   Favorite.findOne({ user: req.user._id })
   .then(favorite => {
     if (favorite) {
-      req.body.forEach(favorite => {
-        if(!favorite.campsites.includes(favorite._id)) {
-          favorite.campsites.push(req.favorite._id);
+      console.log(req.body);
+      req.body.forEach(favObj => {
+        if(!favorite.campsites.includes(favObj._id)) {
+          favorite.campsites.push(favObj._id);
         }
       })
       favorite.save()
@@ -37,9 +38,9 @@ favoriteRouter.route('/')
     } else {
       Favorite.create({ user: req.user._id })
       .then(favorite => {
-        req.body.forEach((fav) => {
-          if (!favorite.campsites.includes(fav._id)) {
-            favorite.campsites.push(fav._id);
+        req.body.forEach((favObj) => {
+          if (!favorite.campsites.includes(favObj._id)) {
+            favorite.campsites.push(favObj._id);
           }
         });
         favorite.save()
