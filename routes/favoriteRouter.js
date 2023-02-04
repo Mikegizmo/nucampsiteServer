@@ -22,7 +22,6 @@ favoriteRouter.route('/')
   Favorite.findOne({ user: req.user._id })
   .then(favorite => {
     if (favorite) {
-      console.log(req.body);
       req.body.forEach(favObj => {
         if(!favorite.campsites.includes(favObj._id)) {
           favorite.campsites.push(favObj._id);
